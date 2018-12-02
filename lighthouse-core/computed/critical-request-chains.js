@@ -31,6 +31,7 @@ class CriticalRequestChains {
     // Iframes are considered High Priority but they are not render blocking
     const isIframe = request.resourceType === NetworkRequest.TYPES.Document
       && request.frameId !== mainResource.frameId;
+    const hasStatusCode200 = request.statusCode === 200;
     // XHRs are fetched at High priority, but we exclude them, as they are unlikely to be critical
     // Images are also non-critical.
     // Treat any missed images, primarily favicons, as non-critical resources
@@ -42,6 +43,8 @@ class CriticalRequestChains {
       NetworkRequest.TYPES.EventSource,
     ];
     if (nonCriticalResourceTypes.includes(request.resourceType || 'Other') ||
+        // if an iframe as a 302 it resourceType is undefined #6675
+        (!request.resourceType && !hasStatusCode200) ||
         isIframe ||
         request.mimeType && request.mimeType.startsWith('image/')) {
       return false;
