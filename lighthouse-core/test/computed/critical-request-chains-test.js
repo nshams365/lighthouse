@@ -331,6 +331,9 @@ describe('CriticalRequestChain gatherer: extractChain function', () => {
     networkRecords[3].url = 'https://example.com/redirect-iframe';
     networkRecords[3].resourceType = undefined;
     networkRecords[3].statusCode = 302;
+    networkRecords[3].redirectDestination = {
+      resourceType: NetworkRequest.TYPES.Document,
+    };
     networkRecords[3].frameId = '4';
 
     const criticalChains = CriticalRequestChains.extractChain(networkRecords, mainResource);

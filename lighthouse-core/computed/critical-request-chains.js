@@ -28,10 +28,16 @@ class CriticalRequestChains {
       return false;
     }
 
+    let resourceType = request.resourceType;
+    // if resourcetype is undefined we check if it's not a 200 and look for a redirect
+    // when we find a redirect we use the redirectDestination's resourcetype #6675
+    if (!resourceType && request.statusCode !== 200 && request.redirectDestination) {
+      resourceType = request.redirectDestination.resourceType;
+    }
+
     // Iframes are considered High Priority but they are not render blocking
-    const isIframe = request.resourceType === NetworkRequest.TYPES.Document
+    const isIframe = resourceType === NetworkRequest.TYPES.Document
       && request.frameId !== mainResource.frameId;
-    const hasStatusCode200 = request.statusCode === 200;
     // XHRs are fetched at High priority, but we exclude them, as they are unlikely to be critical
     // Images are also non-critical.
     // Treat any missed images, primarily favicons, as non-critical resources
@@ -42,9 +48,7 @@ class CriticalRequestChains {
       NetworkRequest.TYPES.Fetch,
       NetworkRequest.TYPES.EventSource,
     ];
-    if (nonCriticalResourceTypes.includes(request.resourceType || 'Other') ||
-        // if an iframe as a 302 it resourceType is undefined #6675
-        (!request.resourceType && !hasStatusCode200) ||
+    if (nonCriticalResourceTypes.includes(resourceType || 'Other') ||
         isIframe ||
         request.mimeType && request.mimeType.startsWith('image/')) {
       return false;
