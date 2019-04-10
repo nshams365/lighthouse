@@ -107,7 +107,6 @@ function setValueAtJsonLDPath(obj, path, value) {
     }
 
     const isLastPart = pathParts.length - 1 === i;
-    let keyFound = false;
     for (const key of Object.keys(currentObj)) {
       // The actual key in JSON might be an absolute IRI like "http://schema.org/author"
       // but key provided by validator is "author"
@@ -121,14 +120,11 @@ function setValueAtJsonLDPath(obj, path, value) {
         } else {
           currentObj = currentObj[key];
         }
-        keyFound = true;
         return;
       }
     }
 
-    if (!keyFound) {
-      // Couldn't find the key we got from validation in the original object
-      throw Error('Key not found: ' + pathPart);
-    }
+    // Couldn't find the key we got from validation in the original object
+    throw Error('Key not found: ' + pathPart);
   });
 }
