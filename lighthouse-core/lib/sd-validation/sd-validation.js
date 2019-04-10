@@ -10,13 +10,11 @@ const validateJsonLD = require('./jsonld-keyword-validator.js');
 const expandAsync = require('./json-expander.js');
 const validateSchemaOrg = require('./schema-validator.js');
 
-/** @typedef {'json'|'json-ld'|'json-ld-expand'|'schema-org'} ValidatorType */
-
 /**
  * Validates JSON-LD input. Returns array of error objects.
  *
  * @param {string} textInput
- * @returns {Promise<Array<{path: ?string, validator: ValidatorType, message: string}>>}
+ * @returns {Promise<Array<LH.StructuredData.ValidationError>>}
  */
 module.exports = async function validate(textInput) {
   // STEP 1: VALIDATE JSON
@@ -24,8 +22,8 @@ module.exports = async function validate(textInput) {
 
   if (parseError) {
     return [{
-      validator: 'json',
-      path: parseError.lineNumber,
+      validator: /** @type {LH.StructuredData.ValidatorType} */ ('json'),
+      lineNumber: parseError.lineNumber,
       message: parseError.message,
     }];
   }
@@ -38,9 +36,10 @@ module.exports = async function validate(textInput) {
   if (jsonLdErrors.length) {
     return jsonLdErrors.map(error => {
       return {
-        validator: /** @type {ValidatorType} */ ('json-ld'),
+        validator: /** @type {LH.StructuredData.ValidatorType} */ ('json-ld'),
         path: error.path,
         message: error.message,
+        lineNumber: getLineNumberFromJsonLDPath(inputObject, error.path),
       };
     });
   }
@@ -52,8 +51,7 @@ module.exports = async function validate(textInput) {
     expandedObj = await expandAsync(inputObject);
   } catch (error) {
     return [{
-      validator: 'json-ld-expand',
-      path: null,
+      validator: /** @type {LH.StructuredData.ValidatorType} */ ('json-ld-expand'),
       message: error.message,
     }];
   }
@@ -64,12 +62,73 @@ module.exports = async function validate(textInput) {
   if (schemaOrgErrors.length) {
     return schemaOrgErrors.map(error => {
       return {
-        validator: /** @type {ValidatorType} */ ('schema-org'),
+        validator: /** @type {LH.StructuredData.ValidatorType} */ ('schema-org'),
         path: error.path,
         message: error.message,
+        lineNumber: error.path ? getLineNumberFromJsonLDPath(inputObject, error.path) : null,
+        invalidTypes: error.invalidTypes,
       };
     });
   }
 
   return [];
 };
+
+/**
+ * @param {*} obj
+ * @param {string} path
+ * @returns null | number - line number of the path value in the prettified JSON
+ */
+function getLineNumberFromJsonLDPath(obj, path) {
+  // To avoid having an extra dependency on a JSON parser we set a unique key in the
+  // object and then use that to identify the correct line
+  const searchKey = Math.random().toString();
+  obj = JSON.parse(JSON.stringify(obj));
+
+  setValueAtJsonLDPath(obj, path, searchKey);
+  const jsonLines = JSON.stringify(obj, null, 2).split('\n');
+  const lineIndex = jsonLines.findIndex(line => line.includes(searchKey));
+
+  return lineIndex === -1 ? null : lineIndex + 1;
+}
+
+/**
+ * @param {*} obj
+ * @param {string} path
+ * @param {*} value
+ */
+function setValueAtJsonLDPath(obj, path, value) {
+  const pathParts = path.split('/').filter(p => !!p);
+  let currentObj = obj;
+  pathParts.forEach((pathPart, i) => {
+    if (pathPart === '0' && !Array.isArray(currentObj)) {
+      // jsonld expansion turns single values into arrays
+      return;
+    }
+
+    const isLastPart = pathParts.length - 1 === i;
+    let keyFound = false;
+    for (const key of Object.keys(currentObj)) {
+      // The actual key in JSON might be an absolute IRI like "http://schema.org/author"
+      // but key provided by validator is "author"
+      const keyParts = key.split('/');
+      const relativeKey = keyParts[keyParts.length - 1];
+      if (relativeKey === pathPart && currentObj[key] !== undefined) {
+        // If we've arrived at the end of the provided path set the value, otherwise
+        // continue iterating with the object at the key location
+        if (isLastPart) {
+          currentObj[key] = value;
+        } else {
+          currentObj = currentObj[key];
+        }
+        keyFound = true;
+        return;
+      }
+    }
+
+    if (!keyFound) {
+      // Couldn't find the key we got from validation in the original object
+      throw Error('Key not found: ' + pathPart);
+    }
+  });
+}

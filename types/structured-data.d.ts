@@ -7,6 +7,21 @@
 declare global {
   module LH {
     module StructuredData {
+
+      export type ValidatorType =
+      | "json"
+      | "json-ld"
+      | "json-ld-expand"
+      | "schema-org";
+    
+      export interface ValidationError {
+        message: string;
+        path?: string;
+        validator: ValidatorType;
+        lineNumber?: number | null;
+        invalidTypes?: Array<string>;
+      }
+
       export interface ExpandedSchemaRepresentationItem {
         [schemaRef: string]: Array<
             string |
