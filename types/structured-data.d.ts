@@ -9,10 +9,10 @@ declare global {
     module StructuredData {
 
       export type ValidatorType =
-      | "json"
-      | "json-ld"
-      | "json-ld-expand"
-      | "schema-org";
+        | "json"
+        | "json-ld"
+        | "json-ld-expand"
+        | "schema-org";
     
       export interface ValidationError {
         message: string;
