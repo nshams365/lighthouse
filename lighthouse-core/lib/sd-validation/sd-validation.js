@@ -77,7 +77,7 @@ module.exports = async function validate(textInput) {
 /**
  * @param {*} obj
  * @param {string} path
- * @returns null | number - line number of the path value in the prettified JSON
+ * @returns {null | number} - line number of the path value in the prettified JSON
  */
 function getLineNumberFromJsonLDPath(obj, path) {
   // To avoid having an extra dependency on a JSON parser we set a unique key in the
