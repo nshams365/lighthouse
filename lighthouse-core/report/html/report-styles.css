@@ -82,6 +82,7 @@
   --chevron-size: 12px;
   --circle-size: calc(3 * var(--header-font-size));
 
+  --audits-margin-bottom: 40px;
   --color-black-100: #F5F5F5;
   --color-black-200: #E0E0E0;
   --color-black-400: #BDBDBD;
@@ -98,6 +99,8 @@
   --color-red: #FF4E42;
   --color-white: #FFFFFF;
   --header-padding: 20px 0 20px 0;
+  --item-bg: var(--color-black-100);
+  --item-padding: 10px 0px;
   --score-container-padding: 12px;
   --score-container-width: 160px;
   --score-number-fontsize-big: 42px;
@@ -109,6 +112,7 @@
   --score-title-line-height-big: 36px;
   --score-title-line-height: 26px;
   --section-padding: 40px;
+  --setting-title-min-width: 220px;
   --topbar-padding: 0 8px;
 
   --pass-icon-url: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>check</title><path fill="%23178239" d="M24 4C12.95 4 4 12.95 4 24c0 11.04 8.95 20 20 20 11.04 0 20-8.96 20-20 0-11.05-8.96-20-20-20zm-4 30L10 24l2.83-2.83L20 28.34l15.17-15.17L38 16 20 34z"/></svg>');
@@ -137,6 +141,7 @@
 
 @media only screen and (max-width: 480px) {
   .lh-vars {
+    --audits-margin-bottom: 24px;
     --body-font-size: 14px;
     --header-padding: 16px 0 16px 0;
     --score-container-padding: 8px;
@@ -150,6 +155,7 @@
     --score-title-line-height-big: 26px;
     --score-title-line-height: 20px;
     --section-padding: 24px;
+    --setting-title-min-width: 120px;
     --topbar-height: 32px;
   }
 
