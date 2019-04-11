@@ -19,7 +19,7 @@ declare global {
         path?: string;
         validator: ValidatorType;
         lineNumber?: number | null;
-        invalidTypes?: Array<string>;
+        typesOfInvalidEntity?: Array<string>;
       }
 
       export interface ExpandedSchemaRepresentationItem {
