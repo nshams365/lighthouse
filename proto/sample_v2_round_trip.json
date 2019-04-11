@@ -3603,8 +3603,7 @@
             "warningAuditsGroupTitle": "Passed audits but with warnings", 
             "warningHeader": "Warnings: "
         }
-    },
-    "stackPacks": [],
+    }, 
     "lighthouseVersion": "4.3.0", 
     "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html", 
     "runWarnings": [], 
