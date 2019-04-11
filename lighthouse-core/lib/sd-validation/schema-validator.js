@@ -73,7 +73,7 @@ function validateObjectKeys(typeOrTypes, keys) {
     return unknownTypes
       .filter(type => SCHEMA_ORG_URL_REGEX.test(type))
       .map(type => ({
-        message: `Unrecognized schema.org type ${type}`,
+        message: `Unrecognized schema.org type: ${type}`,
         key: '@type',
       }));
   }

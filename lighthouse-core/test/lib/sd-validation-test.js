@@ -125,7 +125,7 @@ describe('schema.org validation', () => {
     }`);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].message, 'Unrecognized schema.org type http://schema.org/Cat');
+    assert.equal(errors[0].message, 'Unrecognized schema.org type: http://schema.org/Cat');
     assert.strictEqual(errors[0].lineNumber, 3);
   });
 
@@ -142,8 +142,8 @@ describe('schema.org validation', () => {
     ]`);
 
     assert.equal(errors.length, 2);
-    assert.equal(errors[0].message, 'Unrecognized schema.org type http://schema.org/Cat');
-    assert.equal(errors[1].message, 'Unrecognized schema.org type http://schema.org/Dog');
+    assert.equal(errors[0].message, 'Unrecognized schema.org type: http://schema.org/Cat');
+    assert.equal(errors[1].message, 'Unrecognized schema.org type: http://schema.org/Dog');
   });
 
   it('reports unknown types for objects with multiple types', async () => {
@@ -153,7 +153,7 @@ describe('schema.org validation', () => {
     }`);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].message, 'Unrecognized schema.org type http://schema.org/Dog');
+    assert.equal(errors[0].message, 'Unrecognized schema.org type: http://schema.org/Dog');
   });
 
   it('reports unexpected fields', async () => {
