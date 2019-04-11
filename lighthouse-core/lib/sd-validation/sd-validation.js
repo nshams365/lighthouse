@@ -123,8 +123,5 @@ function setValueAtJsonLDPath(obj, path, value) {
         return;
       }
     }
-
-    // Couldn't find the key we got from validation in the original object
-    throw Error('Key not found: ' + pathPart);
   });
 }
