@@ -17,7 +17,7 @@ describe('JSON validation', () => {
     `);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].lineNumber, 2);
+    assert.strictEqual(errors[0].lineNumber, 2);
     assert.ok(errors[0].message.indexOf(`Expecting '}'`) === 0);
   });
 
@@ -28,7 +28,7 @@ describe('JSON validation', () => {
     }`);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].lineNumber, 2);
+    assert.strictEqual(errors[0].lineNumber, 2);
     assert.ok(errors[0].message.indexOf(`Expecting 'EOF', '}', ':', ',', ']'`) === 0);
   });
 
@@ -72,7 +72,7 @@ describe('JSON-LD validation', () => {
     assert.equal(errors.length, 1);
     assert.equal(errors[0].message, 'Unknown keyword @test');
     assert.equal(errors[0].path, '@test');
-    assert.equal(errors[0].lineNumber, 4);
+    assert.strictEqual(errors[0].lineNumber, 4);
   });
 
   it('reports invalid context', async () => {
@@ -126,7 +126,7 @@ describe('schema.org validation', () => {
 
     assert.equal(errors.length, 1);
     assert.equal(errors[0].message, 'Unrecognized schema.org type http://schema.org/Cat');
-    assert.equal(errors[0].lineNumber, 3);
+    assert.strictEqual(errors[0].lineNumber, 3);
   });
 
   it('handles arrays of json schemas', async () => {
@@ -173,7 +173,7 @@ describe('schema.org validation', () => {
     assert.equal(errors.length, 1);
     assert.equal(errors[0].invalidTypes[0], 'http://schema.org/Article');
     assert.equal(errors[0].message, 'Unexpected property "controversial"');
-    assert.equal(errors[0].lineNumber, 11);
+    assert.strictEqual(errors[0].lineNumber, 11);
   });
 
   it('passes if non-schema.org context', async () => {
@@ -238,6 +238,6 @@ describe('schema.org validation', () => {
     }`);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].lineNumber, 5);
+    assert.strictEqual(errors[0].lineNumber, 5);
   });
 });
