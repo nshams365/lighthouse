@@ -112,7 +112,7 @@ function setValueAtJsonLDPath(obj, path, value) {
       // but key provided by validator is "author"
       const keyParts = key.split('/');
       const relativeKey = keyParts[keyParts.length - 1];
-      if (relativeKey === pathPart && currentObj[key] !== undefined) {
+      if (relativeKey === pathPart) {
         // If we've arrived at the end of the provided path set the value, otherwise
         // continue iterating with the object at the key location
         if (isLastPart) {
