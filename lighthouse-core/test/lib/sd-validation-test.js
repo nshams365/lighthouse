@@ -240,4 +240,27 @@ describe('schema.org validation', () => {
     assert.equal(errors.length, 1);
     assert.strictEqual(errors[0].lineNumber, 5);
   });
+
+  it('fails with correct errors for a deeply nested json-ld snipppet', async () => {
+    const errors = await validateJSONLD(`{
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "author": {
+        "@type": "Person",
+        "name": "Cat",
+        "funder": {
+          "@type": "Organization",
+          "name": "Cat International",
+          "location": {
+            "@type": "Place",
+            "some": "where"
+          }
+        }
+      }
+    }`);
+
+    assert.equal(errors.length, 1);
+    assert.equal(errors[0].message, 'Unexpected property "some"');
+    assert.strictEqual(errors[0].lineNumber, 12);
+  });
 });
