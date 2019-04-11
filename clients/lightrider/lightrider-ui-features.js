@@ -12,22 +12,6 @@
  * generates the saved report from a browserified ReportGenerator.
  */
 class LightriderUIFeatures extends ReportUIFeatures {
-
-  /**
-   * @param {DOM} dom
-   */
-  constructor(dom) {
-    super(dom);
-  }
-
-  /**
-   * @param {LH.Result} report
-   * @override
-   */
-  initFeatures(report) {
-    super.initFeatures(report);
-  }
-
   /**
    * Uses ReportGenerator to create the html that recreates this report.
    * @return {string}
