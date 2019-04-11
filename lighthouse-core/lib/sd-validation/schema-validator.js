@@ -129,7 +129,7 @@ module.exports = function validateSchemaOrg(expandedObj) {
         errors.push({
           invalidTypes: error.invalidTypes,
           message: error.message,
-          // get rid of the first chunk (/@type) as it's the same for all errors
+          // get rid of the last chunk (/@type) as it's the same for all errors
           path:
             '/' +
             path
