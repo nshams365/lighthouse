@@ -70,7 +70,7 @@ describe('JSON-LD validation', () => {
     }`);
 
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].message, 'Unknown keyword @test');
+    assert.equal(errors[0].message, 'Unknown keyword "@test"');
     assert.equal(errors[0].path, '@test');
     assert.strictEqual(errors[0].lineNumber, 4);
   });
