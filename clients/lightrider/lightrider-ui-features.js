@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global ReportUIFeatures, ReportGenerator */
+/* global ReportUIFeatures */
 
 /**
  * Extends ReportUIFeatures to add an (optional) ability to save to a gist and
@@ -22,7 +22,4 @@ class LightriderUIFeatures extends ReportUIFeatures {
   }
 }
 
-// node export for testing.
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = LightriderUIFeatures;
-}
+module.exports = LightriderUIFeatures;
