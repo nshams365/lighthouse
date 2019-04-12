@@ -49,7 +49,7 @@ function findType(type) {
  *
  * @param {string|Array<string>} typeOrTypes
  * @param {Array<string>} keys
- * @returns {Array<Pick<LH.StructuredData.ValidationError, "message" | "typesOfInvalidEntity"> & {key?: string}>}
+ * @returns {Array<Pick<LH.StructuredData.ValidationError, "message" | "validTypes"> & {key?: string}>}
  */
 function validateObjectKeys(typeOrTypes, keys) {
   /** @type {Array<string>} */
@@ -99,16 +99,16 @@ function validateObjectKeys(typeOrTypes, keys) {
     .map(key => ({
       message: `Unexpected property "${key}"`,
       key,
-      typesOfInvalidEntity: types,
+      validTypes: types,
     }));
 }
 
 /**
  * @param {LH.StructuredData.ExpandedSchemaRepresentation|null} expandedObj Valid JSON-LD object in expanded form
- * @return {Array<{path?: string, message: string, typesOfInvalidEntity?: Array<string>}>}
+ * @return {Array<{path?: string, message: string, validTypes?: Array<string>}>}
  */
 module.exports = function validateSchemaOrg(expandedObj) {
-  /** @type {Array<{path?: string, message: string, typesOfInvalidEntity?: Array<string>}>} */
+  /** @type {Array<{path?: string, message: string, validTypes?: Array<string>}>} */
   const errors = [];
 
   if (expandedObj === null) {
@@ -127,7 +127,7 @@ module.exports = function validateSchemaOrg(expandedObj) {
 
       keyErrors.forEach(error => {
         errors.push({
-          typesOfInvalidEntity: error.typesOfInvalidEntity,
+          validTypes: error.validTypes,
           message: error.message,
           // get rid of the last chunk (/@type) as it's the same for all errors
           path:

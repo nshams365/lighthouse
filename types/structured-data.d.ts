@@ -16,8 +16,8 @@ declare global {
         path?: string;
         validator: ValidatorType;
         lineNumber?: number | null;
-        /** Schema.org type URIs of the invalid entity */
-        typesOfInvalidEntity?: Array<string>;
+        /** Schema.org type URIs of the invalid entity (undefined if type is invalid) */
+        validTypes?: Array<string>;
       }
 
       export interface ExpandedSchemaRepresentationItem {
