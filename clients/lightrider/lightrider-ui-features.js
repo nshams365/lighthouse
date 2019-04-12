@@ -22,4 +22,6 @@ class LightriderUIFeatures extends ReportUIFeatures {
   }
 }
 
-module.exports = LightriderUIFeatures;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = LightriderUIFeatures;
+}
