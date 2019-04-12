@@ -248,6 +248,10 @@
   cursor: pointer;
 }
 
+.lh-container {
+  word-break: break-word;
+}
+
 .lh-audit-group a,
 .lh-category-header__description a {
   color: #0c50c7;
