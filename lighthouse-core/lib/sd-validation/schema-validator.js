@@ -105,10 +105,10 @@ function validateObjectKeys(typeOrTypes, keys) {
 
 /**
  * @param {LH.StructuredData.ExpandedSchemaRepresentation|null} expandedObj Valid JSON-LD object in expanded form
- * @return {Array<{path?: string, message: string, validTypes?: Array<string>}>}
+ * @return {Array<Pick<LH.StructuredData.ValidationError, "message" | "validTypes" | "path">>}
  */
 module.exports = function validateSchemaOrg(expandedObj) {
-  /** @type {Array<{path?: string, message: string, validTypes?: Array<string>}>} */
+  /** @type {Array<Pick<LH.StructuredData.ValidationError, "message" | "validTypes" | "path">>} */
   const errors = [];
 
   if (expandedObj === null) {
