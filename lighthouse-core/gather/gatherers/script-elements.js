@@ -78,6 +78,7 @@ class ScriptElements extends Gatherer {
           matchedScriptElement.content = content;
         } else {
           scripts.push({
+            devtoolsNodePath: '',
             type: null,
             src: record.url,
             async: false,
