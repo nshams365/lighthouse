@@ -9,6 +9,7 @@ const parseJSON = require('./json-linter.js');
 const validateJsonLD = require('./jsonld-keyword-validator.js');
 const expandAsync = require('./json-expander.js');
 const validateSchemaOrg = require('./schema-validator.js');
+const getLineNumberFromJsonLDPath = require('./line-number-from-jsonld-path.js');
 
 /**
  * Validates JSON-LD input. Returns array of error objects.
@@ -74,54 +75,3 @@ module.exports = async function validate(textInput) {
   return [];
 };
 
-/**
- * @param {*} obj
- * @param {string} path
- * @returns {null | number} - line number of the path value in the prettified JSON
- */
-function getLineNumberFromJsonLDPath(obj, path) {
-  // To avoid having an extra dependency on a JSON parser we set a unique key in the
-  // object and then use that to identify the correct line
-  const searchKey = Math.random().toString();
-  obj = JSON.parse(JSON.stringify(obj));
-
-  setValueAtJsonLDPath(obj, path, searchKey);
-  const jsonLines = JSON.stringify(obj, null, 2).split('\n');
-  const lineIndex = jsonLines.findIndex(line => line.includes(searchKey));
-
-  return lineIndex === -1 ? null : lineIndex + 1;
-}
-
-/**
- * @param {*} obj
- * @param {string} path
- * @param {*} value
- */
-function setValueAtJsonLDPath(obj, path, value) {
-  const pathParts = path.split('/').filter(p => !!p);
-  let currentObj = obj;
-  pathParts.forEach((pathPart, i) => {
-    if (pathPart === '0' && !Array.isArray(currentObj)) {
-      // jsonld expansion turns single values into arrays
-      return;
-    }
-
-    const isLastPart = pathParts.length - 1 === i;
-    for (const key of Object.keys(currentObj)) {
-      // The actual key in JSON might be an absolute IRI like "http://schema.org/author"
-      // but key provided by validator is "author"
-      const keyParts = key.split('/');
-      const relativeKey = keyParts[keyParts.length - 1];
-      if (relativeKey === pathPart) {
-        // If we've arrived at the end of the provided path set the value, otherwise
-        // continue iterating with the object at the key location
-        if (isLastPart) {
-          currentObj[key] = value;
-        } else {
-          currentObj = currentObj[key];
-        }
-        return;
-      }
-    }
-  });
-}

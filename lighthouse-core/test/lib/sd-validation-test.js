@@ -251,16 +251,22 @@ describe('schema.org validation', () => {
         "funder": {
           "@type": "Organization",
           "name": "Cat International",
-          "location": {
-            "@type": "Place",
-            "some": "where"
-          }
+          "location": [
+            {
+              "@type": "Place",
+              "name": "Catworld"
+            },
+            {
+              "@type": "Place",
+              "some": "where"
+            }
+          ]
         }
       }
     }`);
 
     assert.equal(errors.length, 1);
     assert.equal(errors[0].message, 'Unexpected property "some"');
-    assert.strictEqual(errors[0].lineNumber, 12);
+    assert.strictEqual(errors[0].lineNumber, 17);
   });
 });
