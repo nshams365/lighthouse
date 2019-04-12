@@ -8,7 +8,7 @@
 /* global ReportUIFeatures */
 
 /**
- * Extends ReportUIFeatures to get html from a browserified ReportGenerator.
+ * Extends ReportUIFeatures for a Lightrider viewer to get html from a browserified ReportGenerator.
  */
 class LightriderUIFeatures extends ReportUIFeatures {
   /**
@@ -17,7 +17,7 @@ class LightriderUIFeatures extends ReportUIFeatures {
    * @override
    */
   getReportHtml() {
-    // @ts-ignore This is only called in browser in Lightrider where this exists.
+    // @ts-ignore ReportGenerator is put on window by the host page.
     return window.ReportGenerator.generateReportHtml(this.json);
   }
 }
