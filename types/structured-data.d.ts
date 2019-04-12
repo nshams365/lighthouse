@@ -12,9 +12,11 @@ declare global {
     
       export interface ValidationError {
         message: string;
+        /** Property path in the expanded JSON-LD object */
         path?: string;
         validator: ValidatorType;
         lineNumber?: number | null;
+        /** Schema.org type URIs of the invalid entity */
         typesOfInvalidEntity?: Array<string>;
       }
 

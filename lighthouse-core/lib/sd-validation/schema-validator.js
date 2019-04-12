@@ -49,7 +49,7 @@ function findType(type) {
  *
  * @param {string|Array<string>} typeOrTypes
  * @param {Array<string>} keys
- * @returns {Array<{message: string, key?: string, typesOfInvalidEntity?: Array<string>, path?: string}>}
+ * @returns {Array<Pick<LH.StructuredData.ValidationError, "message" | "typesOfInvalidEntity"> & {key?: string}>}
  */
 function validateObjectKeys(typeOrTypes, keys) {
   /** @type {Array<string>} */
