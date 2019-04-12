@@ -30,7 +30,7 @@ function collectAllScriptElements() {
       defer: script.defer,
       source: /** @type {'head'|'body'} */ (script.closest('head') ? 'head' : 'body'),
       // @ts-ignore - getNodePath put into scope via stringification
-      path: getNodePath(script),
+      devtoolsNodePath: getNodePath(script),
       content: script.src ? null : script.text,
       requestId: null,
     };
