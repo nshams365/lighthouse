@@ -17,6 +17,7 @@ class LightriderUIFeatures extends ReportUIFeatures {
    * @override
    */
   getReportHtml() {
+    // @ts-ignore This is only called in browser in Lightrider where this exists.
     return window.ReportGenerator.generateReportHtml(this.json);
   }
 }
