@@ -8,8 +8,7 @@
 /* global ReportUIFeatures */
 
 /**
- * Extends ReportUIFeatures to add an (optional) ability to save to a gist and
- * generates the saved report from a browserified ReportGenerator.
+ * Extends ReportUIFeatures to use the saved report from a browserified ReportGenerator.
  */
 class LightriderUIFeatures extends ReportUIFeatures {
   /**
